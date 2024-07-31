@@ -17,12 +17,18 @@ module "s3" {
   source = "./s3"
 }
 
-# module "lambda" {
-#   source = "./lambda"
+module "lambda" {
+  source = "./lambda"
 
-#   iam_role = module.iam.iam_role_arn
-# }
+  iam_role = module.iam.iam_for_lambda
+}
 
-# module "iam" {
-#   source = "./iam"
-# }
+module "iam" {
+  source = "./iam"
+
+  visitor_count_table = module.dynamodb.visitor_count_table
+}
+
+module "dynamodb" {
+  source = "./ddb"
+}

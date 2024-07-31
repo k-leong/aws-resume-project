@@ -1,4 +1,4 @@
-variable "domain_name" {
+variable "s3_domain_name" {
   type = string
 }
 
