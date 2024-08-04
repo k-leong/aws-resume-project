@@ -36,10 +36,13 @@ resource "aws_iam_role_policy" "lambda_policy" {
     Statement = [
       {
         Action = [
-          "dynamodb:*",
+          "dynamodb:UpdateItem",
+          "dynamodb:GetItem",
+          "logs:CreateLogStream",
+          "logs:PutLogEvents",
         ]
         Effect   = "Allow"
-        Resource = "${var.visitor_count_table}"
+        Resource = "*"
       },
     ]
   })
