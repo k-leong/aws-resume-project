@@ -33,8 +33,10 @@ module "dynamodb" {
   source = "./ddb"
 }
 
-# module "apigateway" {
-#   source = "./apig"
+module "apigateway" {
+  source = "./apig"
 
-#   lambda_function_arn = module.lambda.visitor_count_lambda_arn
-# }
+  lambda_function_arn = module.lambda.visitor_count_lambda_arn
+
+  depends_on = [ module.lambda ]
+}
