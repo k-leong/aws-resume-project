@@ -21,6 +21,7 @@ module "lambda" {
   source = "./lambda"
 
   iam_role = module.iam.iam_for_lambda
+  apigateway_permission = module.apigateway.apigateway_arn
 }
 
 module "iam" {
@@ -33,10 +34,14 @@ module "dynamodb" {
   source = "./ddb"
 }
 
+module "cloudwatch" {
+  source = "./cloudwatch"
+}
+
 module "apigateway" {
   source = "./apig"
 
   lambda_function_arn = module.lambda.visitor_count_lambda_arn
-
-  depends_on = [ module.lambda ]
+  cloudwatch_role_arn = module.iam.iam_for_apig
+  cloudwatch_log_group = module.cloudwatch.apig_log_group
 }

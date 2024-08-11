@@ -16,6 +16,19 @@ resource "aws_apigatewayv2_integration" "example" {
 resource "aws_apigatewayv2_stage" "example" {
   api_id = aws_apigatewayv2_api.example.id
   name   = "$default"
+  access_log_settings {
+    destination_arn = var.cloudwatch_log_group
+    format = jsonencode({
+      requestId = "$context.requestId"
+      extendedRequestId = "$context.extendedRequestId"
+      sourceIp = "$context.identity.sourceIp"
+      requestTime = "$context.requestTime"
+      status = "$context.status"
+      errorMessage = "$context.error.message"
+      errorMessageString = "$context.error.messageString"
+      integrationStatus = "$context.integration.integrationStatus"
+    })
+  }
 
   auto_deploy = true
 }
@@ -38,6 +51,6 @@ resource "aws_apigatewayv2_route" "example" {
   target = "integrations/${aws_apigatewayv2_integration.example.id}"
 }
 
-# resource "aws_api_gateway_account" "example" {
-#   cloudwatch_role_arn = var.cloudwatch_role_arn
-# }
+resource "aws_api_gateway_account" "example" {
+  cloudwatch_role_arn = var.cloudwatch_role_arn
+}

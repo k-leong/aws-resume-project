@@ -3,5 +3,5 @@ output "iam_for_lambda" {
 }
 
 output "iam_for_apig" {
-  value = aws_iam_role.iam_for_apig.arn
+  value = aws_iam_role.iam_for_apig_cloudwatch.arn
 }
