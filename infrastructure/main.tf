@@ -13,9 +13,11 @@ provider "aws" {
   region = "us-west-1"
 }
 
-# module "s3" {
-#   source = "./s3"
-# }
+module "s3" {
+  source = "./s3"
+
+  cloudfront_dist_arn = module.cloudfront.cloudfront_distribution_arn
+}
 
 module "lambda" {
   source = "./lambda"
@@ -44,4 +46,11 @@ module "apigateway" {
   lambda_function_arn = module.lambda.visitor_count_lambda_arn
   cloudwatch_role_arn = module.iam.iam_for_apig
   cloudwatch_log_group = module.cloudwatch.apig_log_group
+}
+
+module "cloudfront" {
+  source = "./cloudfront"
+
+  s3_domain_name = module.s3.aws_s3_bucket.bucket_regional_domain_name
+  target_origin_id = module.s3.aws_s3_bucket.bucket_regional_domain_name
 }

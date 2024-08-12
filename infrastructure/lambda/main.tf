@@ -12,7 +12,6 @@ resource "aws_lambda_function" "visitor_count_lambda" {
   runtime       = "python3.10"
 }
 
-
 resource "aws_lambda_permission" "lambda_permission" {
   statement_id  = "AllowAPIGatewayInvoke"
   action        = "lambda:InvokeFunction"
