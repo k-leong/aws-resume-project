@@ -1,0 +1,30 @@
+name: Test Lambda
+
+on:
+  push:
+    paths-ignore:
+      - 'infrastructure/**'
+      - 'frontend/**'
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Change Directory
+        run: |
+          cd backend/
+          ls -la
+
+      - name: Install Dependencies
+        run: pip install -r ./requirements.txt
+
+      - name: Run Test
+        run: python -m unittest lambda_test.py
