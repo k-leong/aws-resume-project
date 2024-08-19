@@ -16,6 +16,16 @@
           body.classList.toggle("dark-mode");
         }
       </script>
+      <script>
+        fetch('/config.json')
+          .then(response => response.json())
+          .then(config => {
+              const apiUrl = config.apigateway_url.value;
+              console.log(apiUrl)
+              // Now you can use apiUrl to make requests to your API Gateway
+          });
+      </script>
+    
       <h1>KENNY LEONG</h1>
       <hr class="solid">
       <p class="single-line">email</p>
