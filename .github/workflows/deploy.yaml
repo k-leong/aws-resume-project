@@ -2,9 +2,13 @@ name: Deploy
 
 on:
   workflow_run:
-    workflows: ['Test Infrastructure', 'Test Lambda']
+    workflows: ['Test Infrastructure']
     types:
       - completed
+
+env:
+  AWS_REGION : "us-west-1"
+  AWS_DEFAULT_OUTPUT: json
 
 permissions:
   id-token: write
@@ -13,7 +17,31 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./infrastructure
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Terraform setup
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.7.5
+
+      - name: Assume AWS IAM Role
+        id: configureCreds
+        uses: aws-actions/configure-aws-credentials@v4.0.1
+        with: 
+          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+          role-session-name: GitHub_to_AWS_via_FederatedOIDC
+          aws-region: ${{ env.AWS_REGION }}
+        continue-on-error: true
+
+      - name: Assume Role Failure
+        if: steps.configureCreds.outcome == 'failure'
+        run: |
+          echo "job failed"
+          aws sts get-caller-identity
+          exit 1
