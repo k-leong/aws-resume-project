@@ -8,7 +8,7 @@ resource "aws_lambda_function" "visitor_count_lambda" {
   function_name = "visitor_count_lambda"
   role          = var.iam_role
   filename      = "lambda.zip"
-  handler       = "lambda.lambda_handler"
+  handler       = "lambda_function.lambda_handler"
   runtime       = "python3.10"
 }
 

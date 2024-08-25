@@ -21,7 +21,11 @@
           .then(response => response.json())
           .then(config => {
               const apiUrl = config.apigateway_url.value;
+              let apiRoute = config.apigateway_route.value;
+              apiRoute = apiRoute.split("GET ")[1]
               console.log(apiUrl)
+              console.log(apiRoute)
+              console.log(apiUrl+apiRoute)
               // Now you can use apiUrl to make requests to your API Gateway
           });
       </script>
