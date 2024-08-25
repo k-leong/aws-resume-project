@@ -5,10 +5,6 @@ on:
     paths-ignore:
       - 'backend/**'
       - 'frontend/**'
-  workflow_run:
-    workflows: ['Test Lambda']
-    types:
-      - completed
 
 env:
   AWS_REGION : "us-west-1"

@@ -1,8 +1,12 @@
-name: Deploy
+name: Deploy Lambda
 
 on:
+  push:
+    paths-ignore:
+      - 'infrastructure/**'
+      - 'frontend/**'
   workflow_run:
-    workflows: ['Test Infrastructure']
+    workflows: ['Test Lambda']
     types:
       - completed
 
@@ -17,10 +21,7 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./infrastructure
-
+  
     steps:
       - name: Checkout
         uses: actions/checkout@v4
