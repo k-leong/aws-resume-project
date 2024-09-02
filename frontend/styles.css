@@ -21,3 +21,11 @@ display: inline;
 hr.solid {
 border-top: 3px solid #bbb;
 }
+
+.container {
+display: flex;
+align-items: center;
+}
+.container > * {
+    margin-right: 10px;
+}
