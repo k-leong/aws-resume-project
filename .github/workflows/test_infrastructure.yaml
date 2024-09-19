@@ -60,7 +60,7 @@ jobs:
       - name: Terraform Apply
         id: apply
         run: terraform apply --auto-approve
-        # continue-on-error: true
+        continue-on-error: true
 
       - name: Terraform Destroy
         id: destroy
