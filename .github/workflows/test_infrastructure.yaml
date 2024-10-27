@@ -75,7 +75,7 @@ jobs:
         if: steps.apply.outcome == 'success'
         run: |
           cat terraform.tfstate | base64 -w 0 > ${{steps.generate_filename.outputs.filename}}
-          aws s3 cp ${{steps.generate_filename.outputs.filename}} ${{ secrets.S3_URI }}${{steps.generate_filename.outputs.filename}}
+          aws s3 cp ${{steps.generate_filename.outputs.filename}} ${{ secrets.S3_URI }} ${{steps.generate_filename.outputs.filename}}
 
       - name: Terraform Clean up
         id: clean_up
