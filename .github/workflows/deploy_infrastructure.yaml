@@ -15,12 +15,13 @@ permissions:
   contents: read
 
 jobs:
-  build:
+  deploy:
     if: ${{github.event.workflow_run.conclusion == 'success'}}
     runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: ./infrastructure
+    environment: production
 
     steps:
       - name: Checkout
@@ -62,8 +63,7 @@ jobs:
         id: apply
         run: terraform apply --auto-approve -state=${{ steps.retrieve.outputs.filename }}
 
-      - name: Terraform Output
-        id: output
-        run: terraform output
+      # - name: Terraform Output
+      #   id: output
+      #   run: terraform output
 
-      
