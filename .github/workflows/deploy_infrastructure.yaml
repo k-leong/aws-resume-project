@@ -51,7 +51,7 @@ jobs:
       - name: Retrieve tfstate
         id: retrieve
         run: |
-          aws s3 get-object --bucket ${{ secrets.S3_URI }} --key ${{ secrets.S3_key }} terraform.tfstate
+          aws s3api get-object --bucket ${{ secrets.S3_URI }} --key ${{ secrets.S3_key }} terraform.tfstate
           base64 -d terraform.tfstate > decoded.tfstate
           echo "filename=decoded.tfstate" >> "$GITHUB_OUTPUT"
       
