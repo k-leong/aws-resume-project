@@ -57,40 +57,40 @@ jobs:
         id: init
         run: terraform init
 
-      - name: Terraform Apply
-        id: apply
-        run: terraform apply --auto-approve
-        continue-on-error: true
+      # - name: Terraform Apply
+      #   id: apply
+      #   run: terraform apply --auto-approve
+      #   continue-on-error: true
 
-      - name: Terraform Destroy
-        id: destroy
-        if: steps.apply.outcome == 'failure'
-        run: |
-          terraform destroy --auto-approve
-          echo "resources destroyed"
-          exit 1
+      # - name: Terraform Destroy
+      #   id: destroy
+      #   if: steps.apply.outcome == 'failure'
+      #   run: |
+      #     terraform destroy --auto-approve
+      #     echo "resources destroyed"
+      #     exit 1
 
-      - name: Store State in S3
-        id: store_state_in_s3
-        if: steps.apply.outcome == 'success'
-        run: |
-          cat terraform.tfstate | base64 -w 0 > ${{steps.generate_filename.outputs.filename}}
-          aws s3 cp ${{steps.generate_filename.outputs.filename}} ${{ secrets.S3_URI }}
+      # - name: Store State in S3
+      #   id: store_state_in_s3
+      #   if: steps.apply.outcome == 'success'
+      #   run: |
+      #     cat terraform.tfstate | base64 -w 0 > ${{steps.generate_filename.outputs.filename}}
+      #     aws s3 cp ${{steps.generate_filename.outputs.filename}} ${{ secrets.S3_URI }}
 
-      - name: Terraform Clean up
-        id: clean_up_on_success
-        if: steps.store_state_in_s3.outcome == 'success'
-        run: |
-          rm -rf ${{steps.generate_filename.outputs.filename}}
-          terraform destroy --auto-approve
-          echo "terraform clean up"
-          exit 0
+      # - name: Terraform Clean up
+      #   id: clean_up_on_success
+      #   if: steps.store_state_in_s3.outcome == 'success'
+      #   run: |
+      #     rm -rf ${{steps.generate_filename.outputs.filename}}
+      #     terraform destroy --auto-approve
+      #     echo "terraform clean up"
+      #     exit 0
 
-      - name: Terraform Clean up
-        id: clean_up_on_failure
-        if: steps.store_state_in_s3.outcome == 'failure'
-        run: |
-          rm -rf ${{steps.generate_filename.outputs.filename}}
-          terraform destroy --auto-approve
-          echo "resources destroyed"
-          exit 1
+      # - name: Terraform Clean up
+      #   id: clean_up_on_failure
+      #   if: steps.store_state_in_s3.outcome == 'failure'
+      #   run: |
+      #     rm -rf ${{steps.generate_filename.outputs.filename}}
+      #     terraform destroy --auto-approve
+      #     echo "resources destroyed"
+      #     exit 1
