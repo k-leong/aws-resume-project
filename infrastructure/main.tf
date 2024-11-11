@@ -5,6 +5,10 @@ terraform {
       version = "~> 5.0"
     }
   }
+  backend "s3" {
+    encrypt = true
+    region = "us-west-1"
+  }
 
   required_version = ">= 1.2.0"
 }
