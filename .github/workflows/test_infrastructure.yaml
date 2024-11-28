@@ -60,7 +60,7 @@ jobs:
           echo "key=${{ secrets.REMOTE_KEY }}" >> backend.conf
           echo "dynamodb_table=${{ secrets.REMOTE_LOCK_TABLE }}" >> backend.conf
           echo "role_arn=${{ secrets.REMOTE_ROLE_ARN }}" >> backend.conf
-          echo "" >> backend.conf
+          echo -e "\n" >> backend.conf
 
       - name: Terraform Init
         id: init
