@@ -22,10 +22,10 @@ jobs:
         working-directory: ./infrastructure
 
     env:
-      TF_VAR_REMOTE_BUCKET : ${{ secrets.REMOTE_BUCKET }}
-      TF_VAR_REMOTE_KEY : ${{ secrets.REMOTE_KEY }}
-      TF_VAR_REMOTE_LOCK_TABLE: ${{ secrets.REMOTE_LOCK_TABLE }}
-      TF_VAR_REMOTE_ROLE_ARN: ${{ secrets.REMOTE_ROLE_ARN }}
+      TF_VAR_bucket : ${{ secrets.REMOTE_BUCKET }}
+      TF_VAR_key : ${{ secrets.REMOTE_KEY }}
+      TF_VAR_dynamodb_table: ${{ secrets.REMOTE_LOCK_TABLE }}
+      TF_VAR_role_arn: ${{ secrets.REMOTE_ROLE_ARN }}
 
     steps:
       - name: Checkout
