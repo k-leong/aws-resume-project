@@ -21,6 +21,7 @@ jobs:
     defaults:
       run:
         working-directory: ./backend
+    environment: production
   
     steps:
       - name: Checkout
@@ -29,7 +30,7 @@ jobs:
       - name: Terraform setup
         uses: hashicorp/setup-terraform@v3
         with:
-          terraform_version: 1.7.5
+          terraform_version: 1.9.6
 
       - name: Assume AWS IAM Role
         id: configureCreds

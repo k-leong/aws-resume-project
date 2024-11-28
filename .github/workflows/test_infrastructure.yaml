@@ -21,6 +21,12 @@ jobs:
       run:
         working-directory: ./infrastructure
 
+    env:
+      TF_VAR_REMOTE_BUCKET : ${{ secrets.REMOTE_BUCKET }}
+      TF_VAR_REMOTE_KEY : ${{ secrets.REMOTE_KEY }}
+      TF_VAR_REMOTE_LOCK_TABLE: ${{ secrets.REMOTE_LOCK_TABLE }}
+      TF_VAR_REMOTE_ROLE_ARN: ${{ secrets.REMOTE_ROLE_ARN }}
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -28,7 +34,7 @@ jobs:
       - name: Terraform setup
         uses: hashicorp/setup-terraform@v3
         with:
-          terraform_version: 1.7.5
+          terraform_version: 1.9.6
 
       - name: Assume AWS IAM Role
         id: configureCreds
