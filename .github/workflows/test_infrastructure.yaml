@@ -21,12 +21,6 @@ jobs:
       run:
         working-directory: ./infrastructure
 
-    env:
-      TF_VAR_bucket : ${{ secrets.REMOTE_BUCKET }}
-      TF_VAR_key : ${{ secrets.REMOTE_KEY }}
-      TF_VAR_dynamodb_table: ${{ secrets.REMOTE_LOCK_TABLE }}
-      TF_VAR_role_arn: ${{ secrets.REMOTE_ROLE_ARN }}
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -59,9 +53,17 @@ jobs:
           echo "filename ${filename}"
           echo "filename=${filename}.tfstate" >> $GITHUB_OUTPUT
 
+      - name: Create backend config
+        id: create_backend
+        run: |
+          echo "bucket=${{ secrets.REMOTE_BUCKET }}" > backend.conf
+          echo "key=${{ secrets.REMOTE_KEY }}" >> backend.conf
+          echo "dynamodb_table=${{ secrets.REMOTE_LOCK_TABLE }}" >> backend.conf
+          echo "role_arn=${{ secrets.REMOTE_ROLE_ARN }}" >> backend.conf
+
       - name: Terraform Init
         id: init
-        run: terraform init
+        run: terraform init -backend-config=backend.conf
 
       # - name: Terraform Apply
       #   id: apply
