@@ -46,26 +46,40 @@ jobs:
           aws sts get-caller-identity
           exit 1
 
-      - name: Generate tfstate file
-        id: generate_filename
-        run: |
-          export filename="resume"
-          echo "filename ${filename}"
-          echo "filename=${filename}.tfstate" >> $GITHUB_OUTPUT
+      # - name: Generate tfstate file
+      #   id: generate_filename
+      #   run: |
+      #     export filename="resume"
+      #     echo "filename ${filename}"
+      #     echo "filename=${filename}.tfstate" >> $GITHUB_OUTPUT
 
       - name: Create backend config
         id: create_backend
         run: |
-          echo "bucket=${{ secrets.REMOTE_BUCKET }}" > backend.conf
-          echo "key=${{ secrets.REMOTE_KEY }}" >> backend.conf
-          echo "dynamodb_table=${{ secrets.REMOTE_LOCK_TABLE }}" >> backend.conf
-          echo "role_arn=${{ secrets.REMOTE_ROLE_ARN }}" >> backend.conf
-          echo -e "\n" >> backend.conf
+          echo "bucket=\"${{ secrets.REMOTE_BUCKET }}\"" > backend.conf
+          echo "key=\"${{ secrets.REMOTE_KEY }}\"" >> backend.conf
+          echo "dynamodb_table=\"${{ secrets.REMOTE_LOCK_TABLE }}\"" >> backend.conf
+          echo "role_arn=\"${{ secrets.REMOTE_ROLE_ARN }}\"" >> backend.conf
+          echo "" >> backend.conf
+
+      - name: Convert to utf-8
+        id: convert
+        run: |
+          if [[ $(file -bi backend.conf) != *"utf-8"* ]]; then
+            (echo -ne '\xEF\xBB\xBF'; cat backend.conf) > temp && mv temp backend.conf
+          fi
+          iconv -f us-ascii -t utf-8 backend.conf -o backend.conf || \
+          (cat backend.conf | awk '{print}' > temp && mv temp backend.conf)
 
       - name: Terraform Init
         id: init
         run: terraform init -backend-config=backend.conf
 
+
+      - name: Terraform Plan
+        id: plan
+        run: terraform plan
+      
       # - name: Terraform Apply
       #   id: apply
       #   run: terraform apply --auto-approve

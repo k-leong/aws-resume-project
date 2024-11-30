@@ -47,21 +47,22 @@ jobs:
           echo "job failed"
           aws sts get-caller-identity
           exit 1
-      
-      - name: Retrieve tfstate
-        id: retrieve
-        run: |
-          aws s3api get-object --bucket ${{ secrets.S3_BUCKET }} --key ${{ secrets.S3_key }} terraform.tfstate
-          base64 -d terraform.tfstate > decoded.tfstate
-          echo "filename=decoded.tfstate" >> "$GITHUB_OUTPUT"
-      
+
+      # - name: Retrieve tfstate
+      #   id: retrieve
+      #   run: |
+      #     aws s3api get-object --bucket ${{ secrets.S3_BUCKET }} --key ${{ secrets.S3_key }} terraform.tfstate
+      #     base64 -d terraform.tfstate > decoded.tfstate
+      #     echo "filename=decoded.tfstate" >> "$GITHUB_OUTPUT"
+
       - name: Terraform Init
         id: init
         run: terraform init
-  
-      # - name: Terraform Apply
-      #   id: apply
-      #   run: terraform apply --auto-approve -state=${{ steps.retrieve.outputs.filename }}
+
+      - name: Terraform Apply
+        id: apply
+        run: terraform apply --auto-approve
+        # run: terraform apply --auto-approve -state=${{ steps.retrieve.outputs.filename }}
 
       # - name: Terraform Output
       #   id: output
