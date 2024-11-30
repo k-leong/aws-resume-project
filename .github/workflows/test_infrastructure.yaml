@@ -35,17 +35,17 @@ jobs:
         with:
           arch: amd64
 
-      - name: Assume AWS IAM Role
-        id: configureCreds
+      - name: Assume AWS IAM Role Backend
+        id: configureBackendCreds
         uses: aws-actions/configure-aws-credentials@v4.0.1
         with: 
-          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+          role-to-assume: ${{ secrets.REMOTE_ROLE_ARN }}
           role-session-name: GitHub_to_AWS_via_FederatedOIDC
           aws-region: ${{ env.AWS_REGION }}
         continue-on-error: true
 
       - name: Assume Role Failure
-        if: steps.configureCreds.outcome == 'failure'
+        if: steps.configureBackendCreds.outcome == 'failure'
         run: |
           echo "job failed"
           aws sts get-caller-identity
@@ -72,6 +72,14 @@ jobs:
       - name: Terraform Init
         id: init
         run: terraform init -backend-config=backend.conf
+      
+      - name: Assume AWS IAM Role
+        id: configureCreds
+        uses: aws-actions/configure-aws-credentials@v4.0.1
+        with: 
+          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+          role-session-name: GitHub_to_AWS_via_FederatedOIDC
+          aws-region: ${{ env.AWS_REGION }}
 
       - name: get caller identity
         run : aws sts get-caller-identity --no-cli-pager
