@@ -30,6 +30,11 @@ jobs:
         with:
           terraform_version: 1.9.6
 
+      - name: install aws cli
+        uses: unfor19/install-aws-cli-action@v1
+        with:
+          arch: amd64
+
       - name: Assume AWS IAM Role
         id: configureCreds
         uses: aws-actions/configure-aws-credentials@v4.0.1
@@ -59,7 +64,7 @@ jobs:
           echo "bucket=\"${{ secrets.REMOTE_BUCKET }}\"" > backend.conf
           echo "key=\"${{ secrets.REMOTE_KEY }}\"" >> backend.conf
           echo "dynamodb_table=\"${{ secrets.REMOTE_LOCK_TABLE }}\"" >> backend.conf
-          echo "role_arn=\"${{ secrets.REMOTE_ROLE_ARN }}\"" >> backend.conf
+          echo "assume_role = {role_arn=\"${{ secrets.REMOTE_ROLE_ARN }}\"}" >> backend.conf
           echo "" >> backend.conf
 
       - name: Convert to utf-8
@@ -75,6 +80,8 @@ jobs:
         id: init
         run: terraform init -backend-config=backend.conf
 
+      - name: get caller identity
+        run : aws sts get-caller-identity --no-cli-pager
 
       - name: Terraform Plan
         id: plan
