@@ -61,6 +61,12 @@ jobs:
           --query "Credentials.[AccessKeyId,SecretAccessKey,SessionToken]" \
           --output text))
 
+      - name: Assume Role Failure
+        if: steps.terraformBackend.outcome == 'failure'
+        run: |
+          echo "job failed"
+          exit 1
+
       - name: Create backend config
         id: createBackend
         run: |
@@ -82,9 +88,6 @@ jobs:
       - name: Terraform Init
         id: init
         run: terraform init -backend-config=backend.conf
-
-      - name: get caller identity
-        run : aws sts get-caller-identity --no-cli-pager
 
       - name: Terraform Plan
         id: plan

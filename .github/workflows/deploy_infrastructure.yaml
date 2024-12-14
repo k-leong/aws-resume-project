@@ -40,13 +40,46 @@ jobs:
           role-session-name: GitHub_to_AWS_via_FederatedOIDC
           aws-region: ${{ env.AWS_REGION }}
         continue-on-error: true
-
+        
       - name: Assume Role Failure
         if: steps.configureCreds.outcome == 'failure'
         run: |
           echo "job failed"
-          aws sts get-caller-identity
           exit 1
+
+      - name: Assume Terraform Backend Role
+        id: terraformBackend
+        run: |
+          export $(printf "AWS_ACCESS_KEY_ID=%s AWS_SECRET_ACCESS_KEY=%s AWS_SESSION_TOKEN=%s" \
+          $(aws sts assume-role \
+          --role-arn ${{ secrets.REMOTE_ROLE_ARN }} \
+          --role-session-name MySessionName \
+          --query "Credentials.[AccessKeyId,SecretAccessKey,SessionToken]" \
+          --output text))
+
+      - name: Assume Role Failure
+        if: steps.terraformBackend.outcome == 'failure'
+        run: |
+          echo "job failed"
+          exit 1
+
+      - name: Create backend config
+        id: createBackend
+        run: |
+          echo "bucket=\"${{ secrets.REMOTE_BUCKET }}\"" > backend.conf
+          echo "key=\"${{ secrets.REMOTE_KEY }}\"" >> backend.conf
+          echo "dynamodb_table=\"${{ secrets.REMOTE_LOCK_TABLE }}\"" >> backend.conf
+          echo "assume_role = {role_arn=\"${{ secrets.REMOTE_ROLE_ARN }}\"}" >> backend.conf
+          echo "" >> backend.conf
+
+      - name: Convert to utf-8
+        id: convert
+        run: |
+          if [[ $(file -bi backend.conf) != *"utf-8"* ]]; then
+            (echo -ne '\xEF\xBB\xBF'; cat backend.conf) > temp && mv temp backend.conf
+          fi
+          iconv -f us-ascii -t utf-8 backend.conf -o backend.conf || \
+          (cat backend.conf | awk '{print}' > temp && mv temp backend.conf)
 
       # - name: Retrieve tfstate
       #   id: retrieve
@@ -57,7 +90,7 @@ jobs:
 
       - name: Terraform Init
         id: init
-        run: terraform init
+        run: terraform init -backend-config=backend.conf
 
       - name: Terraform Apply
         id: apply
@@ -67,4 +100,3 @@ jobs:
       # - name: Terraform Output
       #   id: output
       #   run: terraform output
-
