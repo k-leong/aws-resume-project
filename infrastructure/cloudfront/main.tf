@@ -1,9 +1,9 @@
 resource "aws_cloudfront_distribution" "s3_distribution" {
+  default_root_object = "index.html"
   origin {
     domain_name              = var.s3_domain_name
     origin_id                = var.target_origin_id
     origin_access_control_id = aws_cloudfront_origin_access_control.origin_access_control.id
-    origin_path = "/index.html"
   }
   default_cache_behavior {
     allowed_methods  = ["GET", "HEAD"]
