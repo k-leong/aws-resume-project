@@ -1,6 +1,6 @@
 # [Cloud Resume Challenge](https://cloudresumechallenge.dev/docs/the-challenge/aws/)
 
-Built online resume hosted on AWS using the Cloud Resume Challenge as a scope.  
+Built [online resume](https://kennyleong-resume.com/) hosted on AWS using the Cloud Resume Challenge as a scope.  
   
 ## Main Components
 - Frontend
@@ -10,7 +10,7 @@ Built online resume hosted on AWS using the Cloud Resume Challenge as a scope.
     - Visitor counter implemented using Lambda function
     - Counter was updated using DynamoDB
 - Infrastructure as Code
-    - Used Terraform to deploy resources
+    - Used Terraform to create and deploy resources
 - CI/CD
     - Set up GitHub Actions to test and deploy code changes
     - Implemented remote backend using S3 bucket to store terraform state files and DynamoDB as state lock
@@ -25,5 +25,7 @@ Built online resume hosted on AWS using the Cloud Resume Challenge as a scope.
 - Gained experience in CI/CD and serverless architecture
 
 ## TODO
-- [ ] Write GitHub Actions workflow for frontend to automatically deploy and frontend changes
-- [ ] Add personal information to frontend without having to hard code
+- :x: Write GitHub Actions workflow for frontend to automatically deploy any frontend changes
+- :x: Add personal information to frontend without having to hard code
+- :x: Implement live visitor counter
+- :x: PDF resume download button

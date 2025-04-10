@@ -5,6 +5,8 @@ on:
     paths-ignore:
       - 'backend/**'
       - 'frontend/**'
+      - 'README.md'
+      - '.gitignore'
 
 env:
   AWS_REGION : "us-west-1"
