@@ -1,11 +1,11 @@
 # [Cloud Resume Challenge](https://cloudresumechallenge.dev/docs/the-challenge/aws/)
 
 Built [online resume](https://kennyleong-resume.com/) hosted on AWS using the Cloud Resume Challenge as a scope.  
-  
+
 ## Main Components
 - Frontend
     - HTML, JavaScript, CSS hosted on S3 bucket with static website hosting
-    - Website hosted with HTTPS via Cloudfront as CDN
+    - Website hosted with HTTPS via Cloudfront as CDN and Route53 as DNS management
 - Backend
     - Visitor counter implemented using Lambda function
     - Counter was updated using DynamoDB

@@ -7,6 +7,9 @@ on:
       - 'frontend/**'
       - 'README.md'
       - '.gitignore'
+      - '.github/workflows/test_infrastructure.yaml'
+      - '.github/workflows/deploy_infrastructure.yaml'
+      - '.github/workflows/deploy_lambda.yaml'
 
 env:
   AWS_REGION : "us-west-1"
