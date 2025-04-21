@@ -12,6 +12,7 @@ html = html.replace(/{{(.*?)}}/g, (_, key) => config[key.trim()] || '');
 // write html and css into dist folder
 fs.mkdirSync('dist', { recursive: true });
 fs.writeFileSync('dist/index.html', html);
-fs.copyFileSync('style.css', path.join('dist', 'style.css'));
+fs.copyFileSync('styles.css', path.join('dist', 'styles.css'));
+fs.copyFileSync('app.js', path.join('dist', 'app.js'));
 
 console.log('✅ index.html generated with injected config!');

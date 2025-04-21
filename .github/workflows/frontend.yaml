@@ -12,6 +12,10 @@ on:
       - '.github/workflows/test_lambda.yaml'
       - '.github/workflows/deploy_lambda.yaml'
 
+env:
+  AWS_REGION : "us-west-1"
+  AWS_DEFAULT_OUTPUT: json
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -22,3 +26,33 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: install aws cli
+        uses: unfor19/install-aws-cli-action@v1
+        with:
+          arch: amd64
+
+      - name: Assume AWS IAM Role
+        id: configureCreds
+        uses: aws-actions/configure-aws-credentials@v4.0.1
+        with: 
+          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+          role-session-name: GitHub_to_AWS_via_FederatedOIDC
+          aws-region: ${{ env.AWS_REGION }}
+        continue-on-error: true
+
+      - name: Assume Role Failure
+        if: steps.configureCreds.outcome == 'failure'
+        run: |
+          echo "job failed"
+          aws sts get-caller-identity --no-cli-pager
+          exit 1
+
+      - name: Create config
+        run: echo "${{ secrets.CONFIG_JSON }}" > config.json
+
+      - name: Build HTML
+        run: node build.js
+
+      # - name: Upload to S3 
+      #   run: aws s3 sync dist/ s3://your-bucket-name --delete
