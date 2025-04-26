@@ -37,5 +37,5 @@ Built [online resume](https://kennyleong-resume.com/) hosted on AWS using the Cl
   - :x: Update layout
 - :x: Implement live visitor counter
 - :x: PDF resume download button
-- :x: Architecture diagram of application
+- :x: Update architecture diagram of application
 - :x: Add monitoring

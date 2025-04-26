@@ -6,6 +6,7 @@ on:
       - 'infrastructure/**'
       - 'frontend/**'
       - 'README.md'
+      - 'image.png'
       - '.gitignore'
       - '.github/workflows/test_infrastructure.yaml'
       - '.github/workflows/deploy_infrastructure.yaml'

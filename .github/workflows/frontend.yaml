@@ -6,6 +6,7 @@ on:
       - 'infrastructure/**'
       - 'backend/**'
       - 'README.md'
+      - 'image.png'
       - '.gitignore'
       - '.github/workflows/test_infrastructure.yaml'
       - '.github/workflows/deploy_infrastructure.yaml'
@@ -16,6 +17,10 @@ env:
   AWS_REGION : "us-west-1"
   AWS_DEFAULT_OUTPUT: json
 
+permissions:
+  id-token: write
+  contents: read
+  
 jobs:
   build:
     runs-on: ubuntu-latest

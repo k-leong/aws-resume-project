@@ -6,6 +6,7 @@ on:
       - 'backend/**'
       - 'frontend/**'
       - 'README.md'
+      - 'image.png'
       - '.gitignore'
       - '.github/workflows/test_lambda.yaml'
       - '.github/workflows/deploy_lambda.yaml'
