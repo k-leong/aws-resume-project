@@ -54,12 +54,7 @@ jobs:
           exit 1
 
       - name: Create config
-        id: create-config
-        uses: jsdaniell/create-json@v1.2.3
-        with:
-          name: "config.json"
-          json: ${{ secrets.CONFIG_JSON }}
-        # run: echo "${{ secrets.CONFIG_JSON }}" > config.json
+        run: echo '${{ toJson(secrets.CONFIG_JSON) }}' > config.json
 
       - name: Build HTML
         run: node build.js

@@ -10,7 +10,7 @@ on:
       - '.gitignore'
       - '.github/workflows/test_infrastructure.yaml'
       - '.github/workflows/deploy_infrastructure.yaml'
-      - '.github/workflows/deploy_lambda.yaml'
+      - '.github/workflows/frontend.yaml'
 
 env:
   AWS_REGION : "us-west-1"
