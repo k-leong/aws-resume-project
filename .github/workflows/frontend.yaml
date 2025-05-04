@@ -54,10 +54,18 @@ jobs:
           exit 1
 
       - name: Create config
-        run: echo "${{ secrets.CONFIG_JSON }}" > config.json
+        id: create-config
+        uses: jsdaniell/create-json@v1.2.3
+        with:
+          name: "config.json"
+          json: ${{ secrets.CONFIG_JSON }}
+        # run: echo "${{ secrets.CONFIG_JSON }}" > config.json
 
       - name: Build HTML
         run: node build.js
 
-      # - name: Upload to S3 
-      #   run: aws s3 sync dist/ s3://your-bucket-name --delete
+      - name: Upload to S3 
+        run: aws s3 sync dist/ {{ secrets.S3_BUCKET }} --delete
+
+      - name: Invalidate CloudFront cache
+        run: aws cloudfront create-invalidation --distribution-id {{ secrets.AWS_CLOUDFRONT_DIST_ID }} --paths "/*"

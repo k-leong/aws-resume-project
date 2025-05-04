@@ -33,7 +33,7 @@ Built [online resume](https://kennyleong-resume.com/) hosted on AWS using the Cl
 ## TODO
 - :x: Write GitHub Actions workflow for frontend to automatically deploy any frontend changes
 - :x: Update frontend content
-  - :x: Remove any work experience to only showcase project related work
+  - :heavy_check_mark: Remove any work experience to only showcase project related work
   - :x: Update layout
 - :x: Implement live visitor counter
 - :x: PDF resume download button
