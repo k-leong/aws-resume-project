@@ -54,7 +54,7 @@ jobs:
           exit 1
 
       - name: Create config
-        run: echo '${{ toJson(secrets.CONFIG_JSON) }}' > config.json
+        run: echo '${{ secrets.CONFIG_JSON }}' > config.json
 
       - name: Build HTML
         run: node build.js

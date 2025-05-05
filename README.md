@@ -31,7 +31,7 @@ Built [online resume](https://kennyleong-resume.com/) hosted on AWS using the Cl
 - Gained more experience with Terraform and how to implement remote backend as part of development and within CI/CD pipeline
 
 ## TODO
-- :x: Write GitHub Actions workflow for frontend to automatically deploy any frontend changes
+- :heavy_check_mark: Write GitHub Actions workflow for frontend to automatically deploy any frontend changes
 - :x: Update frontend content
   - :heavy_check_mark: Remove any work experience to only showcase project related work
   - :x: Update layout

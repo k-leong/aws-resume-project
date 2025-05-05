@@ -6,6 +6,13 @@ resource "aws_s3_bucket" "cloud_resume_bucket" {
   }
 }
 
+resource "aws_s3_bucket_versioning" "versioning" {
+  bucket = aws_s3_bucket.cloud_resume_bucket.id
+  versioning_configuration {
+    status = "Enabled"
+  }
+}
+
 resource "aws_s3_bucket_policy" "allow_cloudfront_to_s3_bucket" {
   bucket = aws_s3_bucket.cloud_resume_bucket.id
   policy = jsonencode({
