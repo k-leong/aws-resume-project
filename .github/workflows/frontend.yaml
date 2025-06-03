@@ -60,7 +60,27 @@ jobs:
         run: node build.js
 
       - name: Upload to S3 
-        run: aws s3 sync dist/ ${{ secrets.S3_BUCKET }} --delete
+        run: aws s3 sync dist/ ${{ secrets.S3_BUCKET }} --delete --size-only --exclude "kennyleong.pdf"
 
       - name: Invalidate CloudFront cache
         run: aws cloudfront create-invalidation --distribution-id ${{ secrets.AWS_CLOUDFRONT_DIST_ID }} --paths "/*"
+
+      # - name: Get current CloudFront config
+      #   run: |
+      #     aws cloudfront get-distribution-config --id ${{ secrets.AWS_CLOUDFRONT_DIST_ID }} > dist-config.json
+      #     jq '.DistributionConfig' dist-config.json > config.json
+
+      # - name: Modify config
+      #   run: |
+      #     jq '.Aliases.Items = ["kennyleong-resume.com/"] | .Aliases.Quantity = 1' config.json > updated-config.json
+      #     jq \
+      #       --arg acmArn ${{ secrets.AWS_ACM_ARN }} \
+      #     '.ViewerCertificate.CloudFrontDefaultCertificate = false' | '.ViewerCertificate.ACMCertificateArn = $acmArn' config.json > updated-config.json
+
+      # - name: Update CloudFront distribution
+      #   run: |
+      #     ETAG=$(jq '.ETag' dist-config.json)
+      #     aws cloudfront update-distribution \
+      #       --id ${{ secrets.AWS_CLOUDFRONT_DIST_ID }} \
+      #       --if-match "$ETAG" \
+      #       --distribution-config file://updated-config.json
