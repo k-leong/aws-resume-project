@@ -10,6 +10,10 @@ resource "aws_lambda_function" "visitor_count_lambda" {
   filename      = "lambda.zip"
   handler       = "lambda_function.lambda_handler"
   runtime       = "python3.10"
+
+  tags = {
+    project = "cloud-resume"
+  }
 }
 
 resource "aws_lambda_permission" "lambda_permission" {

@@ -14,6 +14,10 @@ data "aws_iam_policy_document" "lambda_role" {
 resource "aws_iam_role" "iam_for_lambda" {
   name               = "iam_for_lambda"
   assume_role_policy = data.aws_iam_policy_document.lambda_role.json
+
+  tags = {
+    project = "cloud-resume"
+  }
 }
 
 resource "aws_iam_role_policy" "lambda_policy" {
@@ -60,6 +64,10 @@ data "aws_iam_policy_document" "apig_role" {
 resource "aws_iam_role" "iam_for_apig_cloudwatch" {
   name = "iam_for_apig_cloudwatch"
   assume_role_policy = data.aws_iam_policy_document.apig_role.json
+
+  tags = {
+    project = "cloud-resume"
+  }
 }
 
 resource "aws_iam_role_policy" "apig_policy" {

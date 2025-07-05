@@ -1,10 +1,14 @@
-resource "aws_apigatewayv2_api" "example" {
-  name          = "example-http-api"
+resource "aws_apigatewayv2_api" "get_visitor" {
+  name          = "get_visitor_api"
   protocol_type = "HTTP"
+
+  tags = {
+    project = "cloud-resume"
+  }
 }
 
-resource "aws_apigatewayv2_integration" "example" {
-  api_id           = aws_apigatewayv2_api.example.id
+resource "aws_apigatewayv2_integration" "get_visitor_integration" {
+  api_id           = aws_apigatewayv2_api.get_visitor.id
   integration_type = "AWS_PROXY"
 
   description     = "apigateway lambda integrator"
@@ -13,8 +17,8 @@ resource "aws_apigatewayv2_integration" "example" {
   payload_format_version = "2.0"
 }
 
-resource "aws_apigatewayv2_stage" "example" {
-  api_id = aws_apigatewayv2_api.example.id
+resource "aws_apigatewayv2_stage" "get_visitor_stage" {
+  api_id = aws_apigatewayv2_api.get_visitor.id
   name   = "$default"
   access_log_settings {
     destination_arn = var.cloudwatch_log_group
@@ -33,24 +37,24 @@ resource "aws_apigatewayv2_stage" "example" {
   auto_deploy = true
 }
 
-resource "aws_apigatewayv2_deployment" "example" {
-  api_id      = aws_apigatewayv2_api.example.id
+resource "aws_apigatewayv2_deployment" "get_visitor_deployment" {
+  api_id      = aws_apigatewayv2_api.get_visitor.id
   description = "apigateway deployment"
 
   lifecycle {
     create_before_destroy = true
   }
   
-  depends_on = [ aws_apigatewayv2_route.example ]
+  depends_on = [ aws_apigatewayv2_route.get_visitor_route ]
 }
 
-resource "aws_apigatewayv2_route" "example" {
-  api_id = aws_apigatewayv2_api.example.id
+resource "aws_apigatewayv2_route" "get_visitor_route" {
+  api_id = aws_apigatewayv2_api.get_visitor.id
   route_key = "GET /get-visitor"
 
-  target = "integrations/${aws_apigatewayv2_integration.example.id}"
+  target = "integrations/${aws_apigatewayv2_integration.get_visitor_integration.id}"
 }
 
-resource "aws_api_gateway_account" "example" {
+resource "aws_api_gateway_account" "get_visitor_account" {
   cloudwatch_role_arn = var.cloudwatch_role_arn
 }

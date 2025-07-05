@@ -7,4 +7,8 @@ resource "aws_dynamodb_table" "VisitorCount" {
     name = "id"
     type = "N"
   }
+
+  tags = {
+    project = "cloud-resume"
+  }
 }

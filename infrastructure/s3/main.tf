@@ -2,7 +2,7 @@ resource "aws_s3_bucket" "cloud_resume_bucket" {
   bucket = "kennyleong-resume-bucket"
 
   tags = {
-    Name = "resume bucket"
+    project = "cloud-resume"
   }
 }
 

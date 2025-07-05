@@ -1,11 +1,11 @@
 output "apigateway_url" {
-  value = aws_apigatewayv2_api.example.api_endpoint
+  value = aws_apigatewayv2_api.get_visitor.api_endpoint
 }
 
 output "apigateway_arn" {
-  value = aws_apigatewayv2_api.example.execution_arn
+  value = aws_apigatewayv2_api.get_visitor.execution_arn
 }
 
 output "apigateway_route" {
-  value = aws_apigatewayv2_route.example.route_key
+  value = aws_apigatewayv2_route.get_visitor_route.route_key
 }
