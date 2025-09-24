@@ -1,6 +1,6 @@
 resource "aws_cloudfront_distribution" "s3_distribution" {
   default_root_object = "index.html"
-  aliases = [ var.alias ]
+  aliases             = [var.alias]
   origin {
     domain_name              = var.s3_domain_name
     origin_id                = var.target_origin_id
@@ -26,9 +26,9 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
   }
   viewer_certificate {
     cloudfront_default_certificate = false
-    acm_certificate_arn = var.acm_certificate
-    minimum_protocol_version = "TLSv1.2_2021"
-    ssl_support_method = "sni-only"
+    acm_certificate_arn            = var.acm_certificate
+    minimum_protocol_version       = "TLSv1.2_2021"
+    ssl_support_method             = "sni-only"
   }
   restrictions {
     geo_restriction {

@@ -11,9 +11,9 @@ resource "aws_apigatewayv2_integration" "get_visitor_integration" {
   api_id           = aws_apigatewayv2_api.get_visitor.id
   integration_type = "AWS_PROXY"
 
-  description     = "apigateway lambda integrator"
-  integration_method = "GET"
-  integration_uri = var.lambda_function_arn
+  description            = "apigateway lambda integrator"
+  integration_method     = "GET"
+  integration_uri        = var.lambda_function_arn
   payload_format_version = "2.0"
 }
 
@@ -23,14 +23,14 @@ resource "aws_apigatewayv2_stage" "get_visitor_stage" {
   access_log_settings {
     destination_arn = var.cloudwatch_log_group
     format = jsonencode({
-      requestId = "$context.requestId"
-      extendedRequestId = "$context.extendedRequestId"
-      sourceIp = "$context.identity.sourceIp"
-      requestTime = "$context.requestTime"
-      status = "$context.status"
-      errorMessage = "$context.error.message"
+      requestId          = "$context.requestId"
+      extendedRequestId  = "$context.extendedRequestId"
+      sourceIp           = "$context.identity.sourceIp"
+      requestTime        = "$context.requestTime"
+      status             = "$context.status"
+      errorMessage       = "$context.error.message"
       errorMessageString = "$context.error.messageString"
-      integrationStatus = "$context.integration.integrationStatus"
+      integrationStatus  = "$context.integration.integrationStatus"
     })
   }
 
@@ -44,12 +44,12 @@ resource "aws_apigatewayv2_deployment" "get_visitor_deployment" {
   lifecycle {
     create_before_destroy = true
   }
-  
-  depends_on = [ aws_apigatewayv2_route.get_visitor_route ]
+
+  depends_on = [aws_apigatewayv2_route.get_visitor_route]
 }
 
 resource "aws_apigatewayv2_route" "get_visitor_route" {
-  api_id = aws_apigatewayv2_api.get_visitor.id
+  api_id    = aws_apigatewayv2_api.get_visitor.id
   route_key = "GET /get-visitor"
 
   target = "integrations/${aws_apigatewayv2_integration.get_visitor_integration.id}"

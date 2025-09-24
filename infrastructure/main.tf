@@ -17,18 +17,8 @@ provider "aws" {
   region = "us-west-1"
 }
 
-provider "aws" {
-  alias = "use1"
-
-  region = "us-east-1"
-}
-
 module "acm" {
   source = "./acm"
-
-  providers = {
-    aws = aws.use1
-  }
 }
 
 module "s3" {
@@ -71,6 +61,6 @@ module "cloudfront" {
 
   s3_domain_name   = module.s3.aws_s3_bucket.bucket_regional_domain_name
   target_origin_id = module.s3.aws_s3_bucket.bucket_regional_domain_name
-  acm_certificate = module.acm.arn
-  alias = module.acm.domain_name
+  acm_certificate  = module.acm.arn
+  alias            = module.acm.domain_name
 }

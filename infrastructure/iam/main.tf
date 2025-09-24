@@ -62,7 +62,7 @@ data "aws_iam_policy_document" "apig_role" {
 }
 
 resource "aws_iam_role" "iam_for_apig_cloudwatch" {
-  name = "iam_for_apig_cloudwatch"
+  name               = "iam_for_apig_cloudwatch"
   assume_role_policy = data.aws_iam_policy_document.apig_role.json
 
   tags = {

@@ -23,7 +23,7 @@ resource "aws_s3_bucket_policy" "allow_cloudfront_to_s3_bucket" {
         Principal = {
           Service = "cloudfront.amazonaws.com"
         }
-        Action = "s3:GetObject"
+        Action   = "s3:GetObject"
         Resource = "${aws_s3_bucket.cloud_resume_bucket.arn}/*"
         Condition = {
           StringEquals = {
