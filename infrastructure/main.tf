@@ -17,8 +17,18 @@ provider "aws" {
   region = "us-west-1"
 }
 
+provider "aws" {
+  alias = "use1"
+
+  region = "us-east-1"
+}
+
 module "acm" {
   source = "./acm"
+
+  providers = {
+    aws = aws.use1
+  }
 }
 
 module "s3" {
